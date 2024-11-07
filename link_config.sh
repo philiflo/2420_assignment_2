@@ -2,7 +2,7 @@
 
 # Link for the path to this repo
 
-REPO_DIR=
+REPO_DIR="/home/arch/.git/2420_assignment_2"
 
 # Symbolic links for bin and config
 
