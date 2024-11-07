@@ -1,13 +1,17 @@
 #!/bin/bash
 
-# Run install_packages.sh
-echo "Installing packages.."
-./install_packages.sh
+# Ensure we’re in the directory where the script is located
+cd "$(dirname "$0")"
 
-# Run link_config.sh
-echo "Creating symbolic links.."
-./create_symlinks.sh
+# Run the package installation script
+echo "Installing necessary packages..."
+sudo ./install_packages.sh
 
-echo "Done!"
+# Run the symbolic links creation script
+echo "Creating symbolic links for config files..."
+sudo ./link_config.sh
+
+echo "System setup complete."
+
 
 
