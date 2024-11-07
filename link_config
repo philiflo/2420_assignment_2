@@ -1,1 +1,12 @@
-# hi
+# !/bin/bash
+
+# Link for the path to this repo
+
+REPO_DIR=
+
+# Symbolic links for bin and config
+
+ln -snf "$REPO_DIR/bin" ~/bin
+ln -snf "$REPO_DIR/config" ~/config
+
+
