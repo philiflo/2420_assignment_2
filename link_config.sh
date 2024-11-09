@@ -1,18 +1,24 @@
 #!/bin/bash
 
 
-if [ -L ~/bin ]; then
-    rm -rf ~/bin
+if [ -L "$HOME/bin" ]; then
+    rm -rf "$HOME/bin"
 fi
-if [ -L ~/.config ]; then
-    rm -rf ~/.config
+if [ -L "$HOME/.config" ]; then
+    rm -rf "$HOME/.config"
+fi
+if [ -L "$HOME/.bashrc" ]; then
+    rm -rf "$HOME/.bashrc"
 fi
 
 
+# Create symbolic links
 ln -sf "$(pwd)/bin" "$HOME/bin"
 ln -sf "$(pwd)/config" "$HOME/.config"
 ln -sf "$(pwd)/bashrc" "$HOME/.bashrc"
 
+
+# Check if all symbolic links were created successfully
 if [ -L "$HOME/bin" ] && [ -L "$HOME/.config" ] && [ -L "$HOME/.bashrc" ]; then
     echo "Symbolic links have been created successfully."
 else
