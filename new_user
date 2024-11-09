@@ -5,14 +5,13 @@ if [ "$EUID -u" -ne 0 ]; then
     exit 1
 fi
 
-# Prompt the admin for the new username, shell, and additional groups
+
 read -p "Enter username: " username
 read -p "Enter absolute path to your shell (basic path it ____: " shell
 read -p "Enter additional needed groups (primary default group is "$username": " groups
 
 
-# Step 1: Create the user's home directory
-# Needs error handling
+
 home_dir="/home/$username"
 
 if [ -d "$home_dir" ]; then
@@ -23,5 +22,9 @@ else
 	echo "Directory "$home_dir" has been made!"
 fi
 
+
+
+# copy personal /etc/skel and past it into home_dir
+cp -r /home/arch/etc/skel/. "$home_dir"  
 
 
