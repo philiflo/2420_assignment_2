@@ -1,19 +1,20 @@
 #!/bin/bash
 
-SOURCE_BIN_DIR="$(pwd)/bin"
-SOURCE_CONFIG_DIR="$(pwd)/config"
-HOME_DIR="$(pwd)/home"
 
-if [ -d ~/bin ] || [ -L ~/bin ]; then
+if [ -L ~/bin ]; then
     rm -rf ~/bin
 fi
-if [ -d ~/.config ] || [ -L ~/.config ]; then
+if [ -L ~/.config ]; then
     rm -rf ~/.config
 fi
 
 
-ln -sf "$(pwd)/bin" ~/bin
-ln -sf "$(pwd)/config" ~/config
-ln -sf "$HOME_DIR/bashrc" ~/.bashrc
+ln -sf "$(pwd)/bin" "$HOME/bin"
+ln -sf "$(pwd)/config" "$HOME/.config"
+ln -sf "$(pwd)/bashrc" "$HOME/.bashrc"
 
-echo "Symbolic links for ~/bin and ~/.config created successfully."
+if [ -L "$HOME/bin" ] && [ -L "$HOME/.config" ] && [ -L "$HOME/.bashrc" ]; then
+    echo "Symbolic links have been created successfully."
+else
+    echo "Some symbolic links were not created. Please check the paths and try again." >&2
+fi
