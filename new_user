@@ -9,7 +9,7 @@ fi
 read -p "Enter username: " username
 read -p "Enter absolute path to your shell (basic path it ____: " shell
 read -p "Enter additional needed groups (primary default group is "$username": " groups
-read -p "Enter desired password: " pword
+
 
 
 
@@ -45,14 +45,18 @@ echo "Group "$username" has been added."
 
 
 echo "Setting password for user $username"
-passwd "$pword"
+passwd "$username"
 
 
 
 if [ -n "$groups" ]; then
-
     for group in $(echo "$groups" | tr ',' '\n'); do
         usermod -aG "$group" "$username"
     done
 fi
+
+echo "User $username created with shell $shell, home directory $home_dir, and groups $groups."
+
+
+
 
