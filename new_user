@@ -28,7 +28,7 @@ else
 fi
 
 
-# 
+# redo, this needs to not use useradd
 useradd -m -d "$home_dir" -s "$shell" "$username"
 if [ $? -ne 0 ]; then
     echo "Error creating user $username" >&2
@@ -42,7 +42,7 @@ if [ $? -ne 0 ]; then
     echo "Error copying files to $home_dir" >&2
     exit 1
 fi
-
+:
 # Set the user’s password
 echo "Setting password for user $username"
 passwd "$username"
