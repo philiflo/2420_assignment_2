@@ -11,3 +11,17 @@ read -p "Enter absolute path to your shell (basic path it ____: " shell
 read -p "Enter additional needed groups (primary default group is "$username": " groups
 
 
+# Step 1: Create the user's home directory
+# Needs error handling
+home_dir="/home/$username"
+
+if [ -d "$home_dir" ]; then
+	echo "Directory "$home_dir" already exists!" >&2
+	exit 1
+else 
+	mkdir -p "$home_dir"
+	echo "Directory "$home_dir" has been made!"
+fi
+
+
+
