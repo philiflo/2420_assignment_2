@@ -1,62 +1,59 @@
 #!/bin/bash
 
-if [ "$EUID -u" -ne 0 ]; then
+# This is a script that automates basic commands to configure a new user in an Arch Linux server
+
+# Ensures that this user runs this with sudo privileges
+if [ "$EUID" -ne 0 ]; then
     echo "This script must be run as root!" >&2
     exit 1
 fi
 
-
+# Prompts the user for inputs for a username, path to desired shell and additional groups 
 read -p "Enter username: " username
-read -p "Enter absolute path to your shell (basic path it ____: " shell
-read -p "Enter additional needed groups (primary default group is "$username": " groups
+read -p "Enter absolute path to your shell (e.g., /bin/bash): " shell
+read -p "Enter additional needed groups (primary default group is \"$username\"): " groups
 
 
-
-
+# Set the users home directory
 home_dir="/home/$username"
 
+
+# This statement checks if the home directory has been successfully created, then make the new directory, if it already exits then return an error
 if [ -d "$home_dir" ]; then
-	echo "Directory "$home_dir" already exists!" >&2
-	exit 1
+    echo "Directory $home_dir already exists!" >&2
+    exit 1
 else 
-	mkdir -p "$home_dir"
-	echo "Directory "$home_dir" has been made!"
+    mkdir -p "$home_dir"
+    echo "Directory $home_dir has been created!"
 fi
 
 
+# 
+useradd -m -d "$home_dir" -s "$shell" "$username"
+if [ $? -ne 0 ]; then
+    echo "Error creating user $username" >&2
+    exit 1
+fi
+echo "User $username has been added."
 
-# copy personal /etc/skel and past it into home_dir
-cp -r /home/arch/etc/skel/. "$home_dir"  
+# Copy /etc/skel contents to the home directory
+cp -r /etc/skel/. "$home_dir"
+if [ $? -ne 0 ]; then
+    echo "Error copying files to $home_dir" >&2
+    exit 1
+fi
 
-
-
-
-cat << EOF >> /etc/passwd
-$username:x:$(($(awk -F: '{print $3}' /etc/passwd | sort -n | tail -n 1) + 1)):$(id -g "$username"):$home_dir:$shell
-EOF
-echo "User "$username" has been added."
-
-
-
-cat << EOF >> /etc/group
-$username:x:$(($(cut -d: -f3 /etc/passwd | sort -n | tail -n 1) + 1)): $home_dir
-EOF
-echo "Group "$username" has been added."
-
-
+# Set the user’s password
 echo "Setting password for user $username"
 passwd "$username"
 
-
-
+# Add user to additional groups if specified
 if [ -n "$groups" ]; then
     for group in $(echo "$groups" | tr ',' '\n'); do
         usermod -aG "$group" "$username"
     done
 fi
 
-echo "User $username created with shell $shell, home directory $home_dir, and groups $groups."
-
-
+echo "User $username created with shell $shell, home directory$home_dir, and groups $groups."
 
 
