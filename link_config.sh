@@ -1,14 +1,19 @@
-# !/bin/bash
+#!/bin/bash
 
-# Link for the path to this repo
+SOURCE_BIN_DIR="$(pwd)/bin"
+SOURCE_CONFIG_DIR="$(pwd)/config"
+HOME_DIR="$(pwd)/home"
 
-REPO_DIR="/home/arch/.git/2420_assignment_2"
+if [ -d ~/bin ] || [ -L ~/bin ]; then
+    rm -rf ~/bin
+fi
+if [ -d ~/.config ] || [ -L ~/.config ]; then
+    rm -rf ~/.config
+fi
 
-# Symbolic links for bin and config
 
+ln -sf "$(pwd)/bin" ~/bin
+ln -sf "$(pwd)/config" ~/config
+ln -sf "$HOME_DIR/bashrc" ~/.bashrc
 
-ln -snf "$REPO_DIR/bin" ~/bin
-ln -snf "$REPO_DIR/config" ~/config
-
-ln -snf "$REPO_DIR/.bashrc" ~/.bashrc
-
+echo "Symbolic links for ~/bin and ~/.config created successfully."
